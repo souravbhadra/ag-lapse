@@ -103,7 +103,7 @@ def app():
     
     if button:
     
-        gdf = gpd.read_file('data/shape/counties.geojson')
+        gdf = gpd.read_file('data/counties.geojson')
         
         fig, ax = plt.subplots(1,1, figsize=(4, 2), dpi=72)
         
