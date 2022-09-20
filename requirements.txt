@@ -6,5 +6,6 @@ geopandas
 pandas
 folium
 scipy
+matplotlib
 streamlit_option_menu
 streamlit_folium
