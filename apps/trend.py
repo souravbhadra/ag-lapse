@@ -52,7 +52,7 @@ def app():
     # initialize the map and store it in a m object
     m = folium.Map(location=[42, -97], zoom_start=4)
 
-    ag_data = pd.read_csv('data/compiled-data/dfs.csv',
+    ag_data = pd.read_csv('data/ag-data.csv',
                           index_col=0,
                           parse_dates=['Year'])
 
@@ -84,7 +84,7 @@ def app():
     custom_scale = (trait_vals[trait_sel].quantile(np.linspace(0, 1, 10))).tolist()
 
     ch = folium.Choropleth(
-        geo_data='data/shape/counties.geojson',
+        geo_data='data/counties.geojson',
         data=trait_vals,
         columns=['Id', trait_sel], 
         key_on='feature.properties.Id',

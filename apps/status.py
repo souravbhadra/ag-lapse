@@ -11,9 +11,9 @@ def app():
     # initialize the map and store it in a m object
     m = folium.Map(location=[42, -97], zoom_start=4)
 
-    ag_data = pd.read_csv('data/compiled-data/dfs.csv',
-                        index_col=0,
-                        parse_dates=['Year'])
+    ag_data = pd.read_csv('data/ag-data.csv',
+                          index_col=0,
+                          parse_dates=['Year'])
 
     with st.sidebar:
         st.title("Agricultural Status")
@@ -41,7 +41,7 @@ def app():
         trait_unit = 'Acre'
 
     folium.Choropleth(
-        geo_data='data/shape/county.geojson',
+        geo_data='data/counties.geojson',
         data=ag_data,
         columns=['Id', trait_sel], 
         key_on='feature.properties.Id',
