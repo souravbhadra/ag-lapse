@@ -6,3 +6,4 @@ geopandas
 pandas
 folium
 scipy
+streamlit_option_menu
