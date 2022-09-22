@@ -65,10 +65,10 @@ def app():
         traits_choice = ['Yield', 'Harvested', 'Planted']
         trait_sel = st.selectbox("Select trait", traits_choice)
         # Time scale
-        time_options = np.arange(2002, 2020)
+        time_options = np.arange(1910, 2021)
         start, end = st.select_slider("Select time range",
                                     options=time_options,
-                                    value=(2003, 2015))
+                                    value=(1930, 2021))
         # Button 
         button_help = """
         Draw individual trend plots \nfor each county. \nCAUTION: It could take 4-5 minutes \nto run the operation.
@@ -105,23 +105,15 @@ def app():
     
         gdf = gpd.read_file('data/counties.geojson')
         
-        fig, ax = plt.subplots(1,1, figsize=(4, 2), dpi=72)
-        
         for idx in np.unique(df['Id']):
-            values, county, state = get_plot_values(df, trait_sel, idx)
-            
-            s = io.BytesIO()
-            ax.plot(values, color='red')
-            ax.set_ylabel(f'{trait_sel}')
-            ax.set_xlabel('Year')
-            ax.text(0.04, 0.96, f"{county}, {state}",
-                    ha='left', va='top', transform=ax.transAxes, fontsize=11)
-            fig.savefig(s, dpi=72, bbox_inches='tight')
-            
+            png = f'data/figures/{crop_sel}-{trait_sel}-{idx}.png'
+            encoded = base64.b64encode(open(png, 'rb').read())
             html = '<img src="data:image/png;base64,{}">'.format
             width, height = 4, 2
-            resolution = 72
-            iframe = IFrame(html(s), width=(width*resolution)+20, height=(height*resolution)+30) 
+            resolution = 150
+            iframe = IFrame(html(encoded.decode('UTF-8')),
+                            width=(width*resolution)+20,
+                            height=(height*resolution)+30)
             popup = folium.Popup(iframe, max_width=2650)
             style_function = lambda x: {'fillColor': '#ffffff', 
                                         'color':'#000000', 

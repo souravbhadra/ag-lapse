@@ -25,8 +25,8 @@ def app():
         trait_sel = st.selectbox("Select trait", traits_choice)
         # Time scale
         time = st.slider("Select time",
-                         min_value=2002,
-                         max_value=2020,
+                         min_value=1910,
+                         max_value=2021,
                          step=1)
 
     ag_data = ag_data[ag_data['Year']==pd.to_datetime(str(time))]
