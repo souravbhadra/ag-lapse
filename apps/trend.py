@@ -104,22 +104,25 @@ def app():
         gdf = gpd.read_file('data/counties.geojson')
         
         for idx in np.unique(df['Id']):
-            png = f'data/figures/{crop_sel}-{trait_sel}-{idx}.png'
-            encoded = base64.b64encode(open(png, 'rb').read())
-            html = '<img src="data:image/png;base64,{}">'.format
-            width, height = 4, 2
-            resolution = 75
-            iframe = IFrame(html(encoded.decode('UTF-8')),
-                            width=(width*resolution)+20,
-                            height=(height*resolution)+30)
-            popup = folium.Popup(iframe, max_width=2650)
-            style_function = lambda x: {'fillColor': '#ffffff', 
-                                        'color':'#000000', 
-                                        'fillOpacity': 0.1, 
-                                        'weight': 0.1}
-            b = folium.GeoJson(gdf.iloc[gdf[gdf['Id']==idx].index[0], -1], 
-                               style_function=style_function)
-            b.add_child(popup)
-            ch.add_child(b)
+            try:
+                png = f'data/figures/{crop_sel}-{trait_sel}-{idx}.png'
+                encoded = base64.b64encode(open(png, 'rb').read())
+                html = '<img src="data:image/png;base64,{}">'.format
+                width, height = 4, 2
+                resolution = 75
+                iframe = IFrame(html(encoded.decode('UTF-8')),
+                                width=(width*resolution)+20,
+                                height=(height*resolution)+30)
+                popup = folium.Popup(iframe, max_width=2650)
+                style_function = lambda x: {'fillColor': '#ffffff', 
+                                            'color':'#000000', 
+                                            'fillOpacity': 0.1, 
+                                            'weight': 0.1}
+                b = folium.GeoJson(gdf.iloc[gdf[gdf['Id']==idx].index[0], -1], 
+                                style_function=style_function)
+                b.add_child(popup)
+                ch.add_child(b)
+            except:
+                pass
 
     folium_static(m, width=800, height=475)
