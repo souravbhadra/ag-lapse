@@ -110,7 +110,7 @@ def app():
             encoded = base64.b64encode(open(png, 'rb').read())
             html = '<img src="data:image/png;base64,{}">'.format
             width, height = 4, 2
-            resolution = 150
+            resolution = 75
             iframe = IFrame(html(encoded.decode('UTF-8')),
                             width=(width*resolution)+20,
                             height=(height*resolution)+30)
