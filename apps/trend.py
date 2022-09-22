@@ -65,14 +65,12 @@ def app():
         traits_choice = ['Yield', 'Harvested', 'Planted']
         trait_sel = st.selectbox("Select trait", traits_choice)
         # Time scale
-        time_options = np.arange(1910, 2021)
+        time_options = np.arange(1910, 2022)
         start, end = st.select_slider("Select time range",
                                     options=time_options,
                                     value=(1930, 2021))
         # Button 
-        button_help = """
-        Draw individual trend plots \nfor each county. \nCAUTION: It could take 4-5 minutes \nto run the operation.
-        """
+        button_help = "Draw individual trend plots."
         button = st.button('Draw Trend Plots', help=button_help)
 
     df, trait_vals = get_trend_values(ag_data,
