@@ -27,7 +27,7 @@ with row1_1:
     st.title("Ag-Lapse")
     st.write(
         """
-        **A spatiotemporal visualization tool for agricultural crops in the United States.**
+        A spatiotemporal visualization tool for agricultural crops in the United States.
         """
     )
     
@@ -84,3 +84,6 @@ with row2_1:
         **Map Author:**  *Sourav Bhadra* [souravbhadra.github.io](https://souravbhadra.github.io) | [GitHub](https://github.com/souravbhadra) | [LinkedIn](https://www.linkedin.com/in/bhadrasourav/) | [Twitter](https://twitter.com/sbhadra19)
         """
     )
+    
+with row2_2:
+    st.image('assets/images.png')
