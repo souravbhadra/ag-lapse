@@ -27,7 +27,7 @@ with row1_1:
     st.title("Ag-Lapse")
     st.write(
         """
-        A spatiotemporal visualization tool for agricultural crops in the United States.
+        A spatiotemporal visualization tool for four major agricultural crops in the United States.
         """
     )
     
