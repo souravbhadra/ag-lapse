@@ -47,14 +47,39 @@ def get_plot_values(df, trait, idx):
     
 
 
-def app(crop_sel, trait_sel, start, end, button):
+def app():
     
     # initialize the map and store it in a m object
-    m = folium.Map(location=[38, -97], zoom_start=4)
+    m = folium.Map(location=[42, -97], zoom_start=4)
 
     ag_data = pd.read_csv('data/ag-data.csv',
                           index_col=0,
                           parse_dates=['Year'])
+
+    with st.sidebar:
+        st.title("Agricultural Trends")
+        # Crop type
+        crops_choice = ['CORN', 'SOYBEANS', 'BARLEY', 'OATS']
+        crop_sel = st.selectbox("Select crop", crops_choice)
+        # Trait type
+        traits_choice = ['Yield', 'Harvested', 'Planted']
+        trait_sel = st.selectbox("Select trait", traits_choice)
+        # Time scale
+        time_options = np.arange(1910, 2022)
+        start, end = st.select_slider("Select time range",
+                                    options=time_options,
+                                    value=(1930, 2021))
+        # Button 
+        button_help = "Draw individual trend plots."
+        button = st.button('Draw Trend Plots', help=button_help)
+        
+        st.title("Contact")
+        st.info(
+            """
+            [Sourav Bhadra](https://souravbhadra.github.io)
+            [GitHub](https://github.com/souravbhadra) | [LinkedIn](https://www.linkedin.com/in/bhadrasourav/) | [Twitter](https://twitter.com/sbhadra19)
+            """
+        )
 
     df, trait_vals = get_trend_values(ag_data,
                                       start,
@@ -63,14 +88,6 @@ def app(crop_sel, trait_sel, start, end, button):
                                       trait_sel)
 
     custom_scale = (trait_vals[trait_sel].quantile(np.linspace(0, 1, 10))).tolist()
-    
-    states = gpd.read_file('data/states.geojson')
-    style_function = lambda x: {'fillColor': '#ffffff', 
-                                'color':'#808080', 
-                                'fillOpacity': 0.1, 
-                                'weight': 1}
-    stt = folium.GeoJson(states['geometry'], 
-                         style_function=style_function).add_to(m)
 
     ch = folium.Choropleth(
         geo_data='data/counties.geojson',
@@ -87,6 +104,7 @@ def app(crop_sel, trait_sel, start, end, button):
         highlight=True,
         line_color='black'
     ).add_to(m)
+    
     
     
     if button:
@@ -109,10 +127,10 @@ def app(crop_sel, trait_sel, start, end, button):
                                             'fillOpacity': 0.1, 
                                             'weight': 0.1}
                 b = folium.GeoJson(gdf.iloc[gdf[gdf['Id']==idx].index[0], -1], 
-                                   style_function=style_function)
+                                style_function=style_function)
                 b.add_child(popup)
                 ch.add_child(b)
             except:
                 pass
 
-    folium_static(m, width=1250, height=550)
+    folium_static(m, width=800, height=475)

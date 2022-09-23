@@ -2,19 +2,40 @@ import streamlit as st
 import folium
 import pandas as pd
 import numpy as np
-import geopandas as gpd
 from streamlit_folium import folium_static
 
 #st.set_page_config(page_title="AgLapse", layout="wide")
 
-def app(crop_sel, trait_sel, time):
+def app():
     
     # initialize the map and store it in a m object
-    m = folium.Map(location=[38, -97], zoom_start=4)
+    m = folium.Map(location=[42, -97], zoom_start=4)
 
     ag_data = pd.read_csv('data/ag-data.csv',
                           index_col=0,
                           parse_dates=['Year'])
+
+    with st.sidebar:
+        st.title("Agricultural Status")
+        # Crop type
+        crops_choice = ['CORN', 'SOYBEANS', 'BARLEY', 'OATS']
+        crop_sel = st.selectbox("Select crop", crops_choice)
+        # Trait type
+        traits_choice = ['Yield', 'Harvested', 'Planted']
+        trait_sel = st.selectbox("Select trait", traits_choice)
+        # Time scale
+        time = st.slider("Select time",
+                         min_value=1910,
+                         max_value=2021,
+                         step=1)
+        
+        st.title("Contact")
+        st.info(
+            """
+            [Sourav Bhadra](https://souravbhadra.github.io)  
+            [GitHub](https://github.com/souravbhadra) | [LinkedIn](https://www.linkedin.com/in/bhadrasourav/) | [Twitter](https://twitter.com/sbhadra19)
+            """
+        )
 
     ag_data = ag_data[ag_data['Year']==pd.to_datetime(str(time))]
     ag_data = ag_data[ag_data['Commodity'] == crop_sel]
@@ -26,14 +47,6 @@ def app(crop_sel, trait_sel, time):
         trait_unit = 'Bu/Acre'
     else:
         trait_unit = 'Acre'
-        
-    states = gpd.read_file('data/states.geojson')
-    style_function = lambda x: {'fillColor': '#ffffff', 
-                                'color':'#808080', 
-                                'fillOpacity': 0.1, 
-                                'weight': 1}
-    stt = folium.GeoJson(states['geometry'], 
-                         style_function=style_function).add_to(m)
 
     folium.Choropleth(
         geo_data='data/counties.geojson',
@@ -50,15 +63,5 @@ def app(crop_sel, trait_sel, time):
         highlight=True,
         line_color='black'
     ).add_to(m)
-    
-    #gdf = gpd.read_file('data/counties.geojson')
-    
-    """for i in range(gdf.shape[0]):
-        b = folium.GeoJson(gdf.iloc[i, -1])
-        county = gdf.loc[i, 'County']
-        state = gdf.loc[i, 'State']
-        popup_text = f'{county}, {state}'
-        b.add_child(folium.Popup(popup_text))
-        m.add_child(b)"""
 
-    folium_static(m, width=1250, height=550) 
+    folium_static(m, width=800, height=475)
