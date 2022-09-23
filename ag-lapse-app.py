@@ -80,7 +80,7 @@ with row2_1:
         [TIGER database](https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html).
         The agricultural dataset was downloaded from the [USDA NASS database](https://quickstats.nass.usda.gov).
         The trend was calculated by simply taking a timeseries and calculating the corresponding slope. 
-        All the analysis was performed using open-source packages in Python.   
+        All the analysis was performed using open-source packages in Python [(Project Repo)](https://github.com/souravbhadra/ag-lapse).   
         **Map Author:**  *Sourav Bhadra* [souravbhadra.github.io](https://souravbhadra.github.io) | [GitHub](https://github.com/souravbhadra) | [LinkedIn](https://www.linkedin.com/in/bhadrasourav/) | [Twitter](https://twitter.com/sbhadra19)
         """
     )
